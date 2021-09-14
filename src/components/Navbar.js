@@ -11,14 +11,27 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+  width: 100%;
+  transition: all 1s ease;
   /* background-color: #1a5dff; */
 
-  ${mobile({ height: "50px", position: "relative" })}
+  ${mobile({
+    height: (props) => props.mobileHeight,
+    position: "relative",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItem: "center",
+  })}
 `;
 
 const MenuDisplay = styled.div`
   display: none;
-  ${mobile({ display: "block" })}
+  ${mobile({
+    display: "block",
+    position: "absolute",
+    top: "40px",
+    left: "10px",
+  })}
 `;
 
 const Logo = styled.span`
@@ -27,18 +40,30 @@ const Logo = styled.span`
   ${mobile({ fontSize: "1.4rem" })}
 `;
 
+const NavContainer = styled.div`
+  display: flex;
+  ${mobile({
+    position: "relative",
+    flexDirection: "column",
+    alignItem: "center",
+    justifyContent: "center",
+  })}
+`;
+
 const NavList = styled.ul`
   display: flex;
   align-items: center;
-  ${mobile({ display: "none" })}
-`;
-
-const NavContainer = styled.div`
-  display: flex;
+  ${mobile({
+    display: (props) => props.display,
+    padding: ".5rem 0",
+    textAlign: "center",
+  })}
 `;
 
 const NavItem = styled.li`
   margin-left: 1rem;
+
+  ${mobile({ marginBottom: "10px" })}
 `;
 
 const NavItemLink = styled.a`
@@ -66,7 +91,6 @@ const NavListOption = styled.div`
   /* background-color: #ff0000; */
   padding: 0.5rem 1rem;
   opacity: ${(props) => props.display};
-  transition: all 0.75s ease;
 `;
 
 const NavItemLinkListOption = styled.span`
@@ -74,12 +98,18 @@ const NavItemLinkListOption = styled.span`
   font-weight: 1;
   padding: 0.5rem 0;
   cursor: pointer;
+
+  &:hover {
+    color: #9cafd6;
+  }
 `;
 
 const NavUserContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 2rem;
+
+  ${mobile({ margin: ".5rem 0rem" })}
 `;
 
 const NavProfileImage = styled.img`
@@ -97,21 +127,28 @@ const NavProfileName = styled.span`
 const Navbar = () => {
   const [showOptions, setShowOptions] = useState(0);
   const [displayMenu, setDisplayMenu] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState("100px");
 
   return (
-    <Container>
+    <Container mobileHeight={mobileMenu}>
       <MenuDisplay onClick={() => setDisplayMenu(!displayMenu)}>
         {displayMenu ? (
-          <Close style={{ color: "#fff" }} />
+          <Close
+            style={{ color: "#fff" }}
+            onClick={() => setMobileMenu("100px")}
+          />
         ) : (
-          <Menu style={{ color: "#fff" }} />
+          <Menu
+            style={{ color: "#fff" }}
+            onClick={() => setMobileMenu("220px")}
+          />
         )}
       </MenuDisplay>
       <div>
         <Logo>SSM</Logo>
       </div>
       <NavContainer>
-        <NavList>
+        <NavList display={displayMenu ? "block" : "none"}>
           <NavItem>
             <NavItemLink>Accueil</NavItemLink>
           </NavItem>
